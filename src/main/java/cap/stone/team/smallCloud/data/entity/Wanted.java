@@ -16,8 +16,10 @@ public class Wanted {
     private LocalDate post_date;
     private LocalDate mod_date;
     private LocalDate lost_date;
+    // 데이터의 상태에 따라 변경가능
     private Double longitude;
     private Double latitude;
+    //
     private String address;
     @ManyToOne
     private LostPet lostPet;
