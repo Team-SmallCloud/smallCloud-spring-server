@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'cap.stone.team'
-version = '0.0.1-SNAPSHOT'
+version = 'file-1.0.0'
 sourceCompatibility = '11'
 
 configurations {
