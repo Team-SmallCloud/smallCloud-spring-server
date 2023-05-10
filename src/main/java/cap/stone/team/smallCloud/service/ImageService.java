@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.UUID;
 
 @Service
@@ -40,18 +39,8 @@ public class ImageService {
         StringBuffer nameBf = new StringBuffer();
         nameBf.append(uuid.toString().strip());
         nameBf.append("_");
-        nameBf.append(illegalChange(name));
+        nameBf.append(name);
         return nameBf;
-    }
-
-    private String illegalChange(String val) {
-        log.info(val);
-        val = val.replaceAll("(?U)\\s+", "_");
-        Base64.Encoder encoder = Base64.getEncoder();
-        byte[] encoded = encoder.encode(val.getBytes());
-        val = encoded.toString();
-        log.info(val);
-        return val;
     }
 
     private void imageCreate(Path path, byte[] bytes) {
