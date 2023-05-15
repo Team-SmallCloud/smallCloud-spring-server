@@ -1,17 +1,25 @@
 package cap.stone.team.smallCloud.data.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import java.time.LocalDate;
+import lombok.*;
 
-//@Entity
-public class ChatRec {
+import javax.persistence.*;
+
+@Entity
+@Table(name = "chat_rec")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ChatRec extends BaseEntity {
     @Id
     private Long id;
-    private User request;
-    private User response;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User reqUser;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User resUser;
+    @Column(name = "room_id")
+    private String roomId;
+    @Column
     private String messages;
-    private LocalDate start_date;
-    private LocalDate end_date;
+    @Column
     private Boolean open;
 }

@@ -1,27 +1,42 @@
 package cap.stone.team.smallCloud.data.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
-//@Entity
+@Entity
+@Table(name = "found")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Found {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column
     private String title;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private User writer;
+    @Column
     private int watch;
+    @Column
     private String content;
-    private LocalDate post_date;
-    private LocalDate mod_date;
-    private LocalDate found_date;
-    // 데이터의 상태에 따라 변경가능
+    @Column(name = "found_date")
+    private LocalDateTime foundDate;
+    @Column
     private Double longitude;
+    @Column
     private Double latitude;
-    //
+    @Column
     private String address;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private LostPet lostPet;
+    @Column
     private Boolean finish;
+    @Column
     private Boolean reject;
 }

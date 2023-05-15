@@ -1,10 +1,10 @@
 package cap.stone.team.smallCloud.data.entity;
 
+import cap.stone.team.smallCloud.data.dto.ImageFind;
+import cap.stone.team.smallCloud.data.dto.ImageTestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageTest {
+public class ImageTest extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -24,11 +24,10 @@ public class ImageTest {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @CreatedDate
-    @Column(name = "create_date", updatable = false)
-    private LocalDateTime createDate;
-
-    @LastModifiedDate
-    @Column(name = "mod_date")
-    private LocalDateTime modDate;
+    public ImageFind toDto() {
+        return ImageFind.builder()
+                .fileName(imageUrl)
+                .imageInfo(imageInfo)
+                .build();
+    }
 }
