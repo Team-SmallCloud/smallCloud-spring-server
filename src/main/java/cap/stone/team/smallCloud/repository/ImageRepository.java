@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ImageRepository extends JpaRepository<ImageTest, Long> {
-    public ImageTest findByImageUrlContainingAndAndImageInfoEquals(String image_url, String image_info);
+    ImageTest findByImageUrlContainingAndAndImageInfoEquals(String image_url, String image_info);
 }
