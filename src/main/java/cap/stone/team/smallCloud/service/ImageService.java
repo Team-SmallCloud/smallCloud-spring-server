@@ -74,4 +74,12 @@ public class ImageService {
         }
         return null;
     }
+
+    public void imageClean() {
+        imageRepository.deleteAll();
+    }
+
+    public void imageRemove(Long id) {
+        imageRepository.deleteById(id);
+    }
 }

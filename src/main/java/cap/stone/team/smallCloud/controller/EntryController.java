@@ -57,4 +57,16 @@ public class EntryController {
         }
         return "upload complete";
     }
+
+    @DeleteMapping("images/remove")
+    public String imageDeleteAll() {
+        imageService.imageClean();
+        return "complete delete all images..";
+    }
+
+    @DeleteMapping("images/remove/{id}")
+    public String imageDeleteAll(@PathVariable Long id) {
+        imageService.imageRemove(id);
+        return "complete delete all images..";
+    }
 }
