@@ -9,7 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequestMapping("/")
 @Controller
@@ -19,7 +23,7 @@ public class EntryController {
     private final ImageService imageService;
 
     @Value("${file.path}")
-    private static String uploadPath;
+    private String uploadPath;
 
     @GetMapping
     public String entry() {
@@ -58,15 +62,34 @@ public class EntryController {
         return "upload complete";
     }
 
-    @DeleteMapping("images/remove")
+    @ResponseBody
+    @DeleteMapping("images/clean")
     public String imageDeleteAll() {
+        List<Path> files = imageService.imageAllData().stream().map(i -> Paths.get(uploadPath + i.getFileName())).collect(Collectors.toList());
+        for (Path p : files) {
+            try {
+                Files.delete(p);
+            } catch (Exception e) {
+                log.error(String.valueOf(e));
+            }
+        }
+
         imageService.imageClean();
         return "complete delete all images..";
     }
 
+    @ResponseBody
     @DeleteMapping("images/remove/{id}")
     public String imageDeleteAll(@PathVariable Long id) {
+        log.info("{}", uploadPath);
+        Path file = Paths.get(uploadPath + imageService.oneImageFind(id).getFileName());
+        try {
+            Files.delete(file);
+        } catch (Exception e) {
+             log.error(String.valueOf(e));
+        }
+
         imageService.imageRemove(id);
-        return "complete delete all images..";
+        return "complete delete images..";
     }
 }
