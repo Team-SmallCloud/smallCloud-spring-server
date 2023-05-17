@@ -34,12 +34,12 @@ public class EntryController {
 
     @GetMapping("images/detail/{id}")
     public String imageDetail(@PathVariable Long id) {
-        return "redirect:/images/" + imageService.oneImageFind(id).getFileName();
+        return "redirect:/uploads/" + imageService.oneImageFind(id).getFileName();
     }
 
     @GetMapping("images/show")
     public String imageTestFind(ImageFind imageFind) {
-        return "redirect:/images/" + imageService.findImage(imageFind).getFileName();
+        return "redirect:/uploads/" + imageService.findImage(imageFind).getFileName();
     }
 
     @ResponseBody
