@@ -15,7 +15,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,15 +30,12 @@ public class ImageService {
     private String uploadPath;
 
     public ImageFind findImage(ImageFind imageFind) {
-        log.info("test : {}", imageFind.getFileName());
-        log.info("test : {}", imageFind.getImageInfo());
         ImageTest val = imageRepository.findByImageUrlContainingAndAndImageInfoEquals(imageFind.getFileName(), imageFind.getImageInfo());
         return val.toDto();
     }
 
     public void imageUpload(ImageTestDto imageTestDto) throws IOException {
         String imageFileName = fileNameGen(imageTestDto.fileOriginalName()).toString();
-        log.info("image store path : {}", uploadPath);
         Path imageFilePath = Paths.get(uploadPath + imageFileName);
 
         imageCreate(imageFilePath, imageTestDto.fileBytes());
@@ -61,5 +61,17 @@ public class ImageService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<ImageFind> imageAllData() {
+        return imageRepository.findAll().stream().map(v -> v.toAllDto()).collect(Collectors.toList());
+    }
+
+    public ImageFind oneImageFind(Long id) {
+        Optional<ImageTest> find = imageRepository.findById(id);
+        if (find.isPresent()) {
+            return find.get().toAllDto();
+        }
+        return null;
     }
 }

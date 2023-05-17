@@ -1,13 +1,11 @@
 package cap.stone.team.smallCloud.data.entity;
 
 import cap.stone.team.smallCloud.data.dto.ImageFind;
-import cap.stone.team.smallCloud.data.dto.ImageTestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "test")
@@ -26,6 +24,14 @@ public class ImageTest extends BaseEntity {
 
     public ImageFind toDto() {
         return ImageFind.builder()
+                .fileName(imageUrl)
+                .imageInfo(imageInfo)
+                .build();
+    }
+
+    public ImageFind toAllDto() {
+        return ImageFind.builder()
+                .id(id)
                 .fileName(imageUrl)
                 .imageInfo(imageInfo)
                 .build();
