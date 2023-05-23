@@ -50,7 +50,7 @@ public class UserDto {
         if (email.length() <= 0) {
             throw new EmptyUserDataException("이메일을 입력해 주세요.");
         } else {
-            if (!email.matches("/(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))/")) {
+            if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
                 throw new UserDataInvalidException("이메일 형식이 틀렸습니다.");
             }
         }
@@ -64,11 +64,11 @@ public class UserDto {
 
     private void pwInvalidCheck() {
         if (password.length() >= 8) {
-            if (password.matches("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])/")) {
+            if (!password.matches("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")) {
                 throw new UserDataInvalidException("영어 대소문자와 숫자가 필요합니다.");
             }
             else {
-                if (password.matches("/^(?=.*?[#?!@$ %^&*-])/")) {
+                if (!password.matches("^(?=.*?[#?!@$ %^&*-]).+$")) {
                     throw new UserDataInvalidException("특수문자가 포함되어 있지 않습니다.");
                 }
             }
