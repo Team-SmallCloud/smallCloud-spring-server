@@ -14,7 +14,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Column
+    @Column(unique = true)
     private String name;
 
     public CategoryDto toDto() {
