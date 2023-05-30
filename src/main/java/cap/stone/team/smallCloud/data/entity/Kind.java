@@ -16,7 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class Kind {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;

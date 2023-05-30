@@ -12,6 +12,10 @@ public class CategoryDto {
     private Long id;
     private String name;
 
+    public CategoryDto(String name) {
+        this.name = name;
+    }
+
     public Category toEntity() {
         return Category.builder()
                 .id(id)

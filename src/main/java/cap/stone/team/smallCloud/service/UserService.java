@@ -7,8 +7,6 @@ import java.util.List;
 public interface UserService {
     UserDto createUser(UserDto user);
     UserDto updateUser(UserDto user);
-    UserDto updateReject(UserDto user);
-    UserDto updateSafeMoney(UserDto user);
     void deleteUser(UserDto user);
     void deleteUserById(Long id);
     UserDto userInfo(UserDto user);

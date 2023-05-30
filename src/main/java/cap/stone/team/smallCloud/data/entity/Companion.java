@@ -1,5 +1,7 @@
 package cap.stone.team.smallCloud.data.entity;
 
+import cap.stone.team.smallCloud.data.dto.CompanionDto;
+import cap.stone.team.smallCloud.data.dto.KindDto;
 import cap.stone.team.smallCloud.data.vo.type.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "companion")
@@ -15,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Companion {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
     private String name;
@@ -41,4 +44,27 @@ public class Companion {
     private String color;
     @Column
     private String shape;
+
+    public CompanionDto toDto() {
+        KindDto kindDto = kind.toDto();
+
+        return CompanionDto.builder()
+                .id(id)
+                .name(name)
+                .kindId(kindDto.getId())
+                .kindCategoryId(kindDto.getCategoryId())
+                .kindCategoryName(kindDto.getCategoryName())
+                .kindSpecies(kindDto.getSpecies())
+                .NFC_code(NFC_code)
+                .animal_reg_code(animal_reg_code)
+                .ownerIds(owner.stream().map(u -> u.getId()).collect(Collectors.toList()))
+                .gender(gender)
+                .age(age)
+                .length(length)
+                .height(height)
+                .width(width)
+                .color(color)
+                .shape(shape)
+                .build();
+    }
 }

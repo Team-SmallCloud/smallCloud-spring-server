@@ -27,6 +27,15 @@ public class UserController {
         return user;
     }
 
+    @PutMapping("edit")
+    public UserDto editUser(UserDto userDto) {
+        userDto.inputInvalidCheck();
+        userDto.startUserSet();
+        UserDto user = userService.updateUser(userDto);
+
+        return user;
+    }
+
     @GetMapping("login")
     public UserDto loginUser(@RequestParam String email, @RequestParam String password) {
         UserDto userDto = userService.loginUser(email, password);

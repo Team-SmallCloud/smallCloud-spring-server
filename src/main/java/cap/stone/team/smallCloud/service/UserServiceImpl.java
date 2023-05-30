@@ -4,6 +4,7 @@ import cap.stone.team.smallCloud.data.dto.UserDto;
 import cap.stone.team.smallCloud.data.entity.User;
 import cap.stone.team.smallCloud.repository.UserRepository;
 import cap.stone.team.smallCloud.utils.exception.FailUserException;
+import cap.stone.team.smallCloud.utils.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,20 +23,14 @@ public class UserServiceImpl implements UserService {
         return save.toDto();
     }
 
+    @Transactional
     @Override
     public UserDto updateUser(UserDto user) {
-        User save = userRepository.save(user.toEntity());
-        return save.toDto();
-    }
-
-    @Override
-    public UserDto updateReject(UserDto user) {
-        return null;
-    }
-
-    @Override
-    public UserDto updateSafeMoney(UserDto user) {
-        return null;
+        if (userRepository.existsById(user.getId())) {
+            User save = userRepository.save(user.toEntity());
+            return save.toDto();
+        }
+        throw new EntityNotFoundException("사용자가 없습니다.");
     }
 
     @Transactional

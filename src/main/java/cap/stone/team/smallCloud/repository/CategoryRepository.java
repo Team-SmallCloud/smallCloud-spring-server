@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
-    List<Category> findByNameLike(String name);
+    List<Category> findByNameContains(String name);
     Category findByNameEquals(String name);
     void deleteByNameEquals(String name);
 }
