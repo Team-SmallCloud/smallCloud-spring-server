@@ -23,6 +23,7 @@ public class UserDto {
     private String password;
     private Boolean reject;
     private int safeMoney;
+    private String juso;
 
     public void startUserSet() {
         reject = false;
@@ -39,15 +40,15 @@ public class UserDto {
     }
 
     public void inputInvalidCheck() {
-        if (name.length() <= 0) {
+        if (name.isEmpty()) {
             throw new EmptyUserDataException("이름을 입력해 주세요.");
         }
 
-        if (phone.length() <= 0) {
+        if (phone.isEmpty()) {
             throw new EmptyUserDataException("휴대전화 번호를 입력해 주세요.");
         }
 
-        if (email.length() <= 0) {
+        if (email.isEmpty()) {
             throw new EmptyUserDataException("이메일을 입력해 주세요.");
         } else {
             if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
@@ -55,7 +56,7 @@ public class UserDto {
             }
         }
 
-        if (password.length() <= 0) {
+        if (password.isEmpty()) {
             throw new EmptyUserDataException("비밀번호를 입력해 주세요.");
         } else {
             pwInvalidCheck();
@@ -87,6 +88,7 @@ public class UserDto {
                 .password(password)
                 .reject(reject)
                 .safeMoney(safeMoney)
+                .juso(juso)
                 .build();
     }
 }

@@ -21,6 +21,11 @@ public class KindController {
     private final KindService kindService;
 
     @GetMapping
+    public List<KindDto> showAllKinds() {
+        return kindService.allKind();
+    }
+
+    @GetMapping("search")
     public List<KindDto> showKinds(KindDto kindDto) {
         return kindService.searchKind(kindDto);
     }

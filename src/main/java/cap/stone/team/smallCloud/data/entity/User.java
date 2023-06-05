@@ -30,6 +30,8 @@ public class User {
     private Boolean reject;
     @Column(name = "safe_money")
     private int safeMoney;
+    @Column
+    private String juso;
 
     public UserDto toDto() {
         return UserDto.builder()
@@ -41,6 +43,7 @@ public class User {
                 .phone(phone)
                 .reject(reject)
                 .safeMoney(safeMoney)
+                .juso(juso)
                 .build();
     }
 }

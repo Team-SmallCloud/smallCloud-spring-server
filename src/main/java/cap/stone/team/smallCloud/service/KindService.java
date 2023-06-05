@@ -9,6 +9,7 @@ public interface KindService {
     KindDto createKind(KindDto kind);
     KindDto updateKind(KindDto kind);
     KindDto searchId(Long id);
+    List<KindDto> allKind();
     List<KindDto> searchKind(KindDto kind);
     void deleteKind(KindDto kind);
     void categoryDeleted(CategoryDto category);

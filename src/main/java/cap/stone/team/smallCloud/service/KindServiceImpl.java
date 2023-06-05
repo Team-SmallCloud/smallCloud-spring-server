@@ -43,6 +43,11 @@ public class KindServiceImpl implements KindService {
     }
 
     @Override
+    public List<KindDto> allKind() {
+        return kindRepository.findAll().stream().map(Kind::toDto).collect(Collectors.toList());
+    }
+
+    @Override
     public List<KindDto> searchKind(KindDto kind) {
         return searchKindRepository.findKindBySql(kind).stream().map(Kind::toDto).collect(Collectors.toList());
     }

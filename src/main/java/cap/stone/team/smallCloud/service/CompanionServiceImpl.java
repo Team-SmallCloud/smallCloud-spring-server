@@ -4,11 +4,12 @@ import cap.stone.team.smallCloud.data.dto.CompanionDto;
 import cap.stone.team.smallCloud.data.dto.UserDto;
 import cap.stone.team.smallCloud.data.entity.Companion;
 import cap.stone.team.smallCloud.repository.CompanionRepository;
+import cap.stone.team.smallCloud.utils.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,34 +24,34 @@ public class CompanionServiceImpl implements CompanionService {
 
     @Override
     public List<CompanionDto> allUsersPets(UserDto user) {
-        Optional<Companion> ids = companionRepository.findById(user.getId());
-        if (.isPresent()) {
-            return companionRepository
-        }
+        List<Companion> companions = companionRepository.searchPets(user.getId());
+
+        return companions.stream().map(Companion::toDto).collect(Collectors.toList());
     }
 
     @Override
     public CompanionDto addPets(CompanionDto companionDto) {
-        return null;
+        return companionRepository.save(companionDto.toEntity()).toDto();
     }
 
-    @Override
-    public CompanionDto editOwners(List<Long> ids) {
-        return null;
-    }
-
+    @Transactional
     @Override
     public CompanionDto editPets(CompanionDto companionDto) {
-        return null;
+        if (companionRepository.existsById(companionDto.getId())) {
+            return companionRepository.save(companionDto.toEntity()).toDto();
+        }
+        throw new EntityNotFoundException("수정할 펫이 없습니다.");
     }
 
-    @Override
-    public void deleteOwner(Long id) {
-
-    }
-
+    @Transactional
     @Override
     public void deleteCompanion(CompanionDto companionDto) {
+        companionRepository.delete(companionDto.toEntity());
+    }
 
+    @Transactional
+    @Override
+    public void deleteCompanionByOwner(Long id) {
+        companionRepository.deleteByOwner(id);
     }
 }
