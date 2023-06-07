@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum Board {
-    WANTED("wanted"),
-    FOUND("found");
+    W("wanted"),
+    F("found");
 
     Board(String title) {
         title = title;
