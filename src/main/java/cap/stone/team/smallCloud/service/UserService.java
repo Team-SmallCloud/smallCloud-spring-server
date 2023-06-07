@@ -10,6 +10,7 @@ public interface UserService {
     void deleteUser(UserDto user);
     void deleteUserById(Long id);
     UserDto userInfo(UserDto user);
+    UserDto userInfo(Long id);
     UserDto loginUser(String uid, String passwd);
     List<UserDto> tempUserList();
 }

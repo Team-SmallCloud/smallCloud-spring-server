@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,6 +50,16 @@ public class UserServiceImpl implements UserService {
     public UserDto userInfo(UserDto user) {
         User fUser = userRepository.findByNameEqualsAndPhoneEqualsAndEmailEquals(user.getName(), user.getPhone(), user.getEmail());
         return fUser.toDto();
+    }
+
+    @Override
+    public UserDto userInfo(Long id) {
+        Optional<User> userId = userRepository.findById(id);
+
+        if (userId.isPresent()) {
+            return userId.get().toDto();
+        }
+        throw new EntityNotFoundException("일치하는 회원이 없습니다.");
     }
 
     @Override

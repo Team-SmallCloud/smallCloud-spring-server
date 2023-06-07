@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequestMapping("/kinds")
@@ -86,10 +87,16 @@ public class KindController {
     }
 
     @DeleteMapping("categories/remove")
-    public String deleteCategory(String name) {
-        Category named = categoryRepository.findByNameEquals(name);
-        categoryRepository.delete(named);
+    public String deleteCategory(Long id) {
+        Optional<Category> oCategory = categoryRepository.findById(id);
+        Category named = Category.builder().build();
+
+        if(oCategory.isPresent()) {
+            named = oCategory.get();
+        }
+
         kindService.categoryDeleted(named.toDto());
+        categoryRepository.delete(named);
 
         return "delete well";
     }

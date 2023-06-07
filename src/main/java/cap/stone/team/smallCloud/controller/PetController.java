@@ -1,21 +1,27 @@
 package cap.stone.team.smallCloud.controller;
 
 import cap.stone.team.smallCloud.data.dto.CompanionDto;
+import cap.stone.team.smallCloud.data.dto.UserDto;
 import cap.stone.team.smallCloud.data.entity.User;
-import cap.stone.team.smallCloud.repository.UserRepository;
 import cap.stone.team.smallCloud.service.CompanionService;
+import cap.stone.team.smallCloud.service.UserService;
+import cap.stone.team.smallCloud.utils.exception.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityExistsException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequestMapping("/pets")
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class PetController {
     private final CompanionService companionService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping
     public List<CompanionDto> allCompanion() {
@@ -24,9 +30,9 @@ public class PetController {
 
     @GetMapping("/myowns")
     public List<CompanionDto> allPets(Long id) {
-        Optional<User> byId = userRepository.findById(id);
+        UserDto user = userService.userInfo(id);
 
-        return byId.map(user -> companionService.allUsersPets(user.toDto())).orElse(null);
+        return companionService.allUsersPets(user);
     }
 
     @PostMapping("/myowns/add")
@@ -37,6 +43,36 @@ public class PetController {
     @PutMapping("/myowns/edit")
     public CompanionDto editPets(CompanionDto companionDto) {
         return companionService.editPets(companionDto);
+    }
+
+    @PutMapping("/myowns/owner")
+    public CompanionDto addPetsOwner(Long id, Long addId) {
+        UserDto user = userService.userInfo(addId);
+
+        List<Long> petOwners = companionService.petsOwners(id);
+        if (petOwners.contains(user.getId())) {
+            throw new EntityExistsException("이미 사용자가 추가되어 있습니다.");
+        }
+        else {
+            petOwners.add(user.getId());
+            companionService.addPetOwners(id, petOwners);
+            return companionService.petCheck(id);
+        }
+    }
+
+    @PutMapping("/myowns/nomore")
+    public CompanionDto delPetsOwner(Long id, Long addId) {
+        UserDto user = userService.userInfo(addId);
+
+        List<Long> petOwners = companionService.petsOwners(id);
+        if (petOwners.contains(user.getId())) {
+            petOwners.remove(user.getId());
+            companionService.addPetOwners(id, petOwners);
+            return companionService.petCheck(id);
+        }
+        else {
+            throw new EntityNotFoundException("사용자가 이미 없습니다.");
+        }
     }
 
     @DeleteMapping("/myowns/remove")

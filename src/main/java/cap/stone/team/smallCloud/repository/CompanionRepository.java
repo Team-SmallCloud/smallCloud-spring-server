@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CompanionRepository extends JpaRepository<Companion, Long>, CompanionCustomRepository {
+public interface CompanionRepository extends JpaRepository<Companion, Long> {
     boolean existsById(Long id);
     void deleteByOwner(Long id);
 }

@@ -1,19 +1,27 @@
 package cap.stone.team.smallCloud.repository;
 
 import cap.stone.team.smallCloud.data.entity.Companion;
+import cap.stone.team.smallCloud.data.entity.User;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static cap.stone.team.smallCloud.data.entity.QCompanion.companion;
 import static cap.stone.team.smallCloud.data.entity.QUser.user;
 
-public class CompanionRepositoryImpl implements CompanionCustomRepository {
+@Repository
+public class CompanionCustomRepositoryImpl implements CompanionCustomRepository {
     private final JPAQueryFactory queryFactory;
+    @PersistenceContext
+    private final EntityManager em;
 
-    public CompanionRepositoryImpl(EntityManager em) {
-        this.queryFactory = new JPAQueryFactory(em);
+    public CompanionCustomRepositoryImpl(EntityManager em) {
+        this.em = em;
+        this.queryFactory = new JPAQueryFactory(this.em);
     }
 
     @Override
@@ -31,8 +39,16 @@ public class CompanionRepositoryImpl implements CompanionCustomRepository {
                 .fetch();
     }
 
+    @Transactional
     @Override
-    public Companion addOwner(Long id, List<Long> ownerIds) {
-        return null;
+    public void addOwner(Long id, List<User> owners) {
+        queryFactory.update(companion)
+                .where(companion.id.eq(id))
+                .set(companion.owner, owners)
+                .execute();
+
+        em.clear();
+        em.flush();
     }
 }
+

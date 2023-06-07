@@ -1,10 +1,11 @@
 package cap.stone.team.smallCloud.repository;
 
 import cap.stone.team.smallCloud.data.entity.Companion;
+import cap.stone.team.smallCloud.data.entity.User;
 
 import java.util.List;
 
 public interface CompanionCustomRepository {
     List<Companion> searchPets(Long id);
-    Companion addOwner(Long id, List<Long> ownerIds);
+    void addOwner(Long id, List<User> owners);
 }
